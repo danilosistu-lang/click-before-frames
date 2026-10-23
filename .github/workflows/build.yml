@@ -1,0 +1,51 @@
+# Builds the .geode for every supported platform without a local toolchain.
+# Push the repo to GitHub, then grab the artifact from the Actions run.
+#
+# NOTE: the reusable workflow inputs below follow the Geode CLI's generated
+# template at the time of writing. If Geode changes the action, regenerate this
+# file with `geode mod new` / check geode-sdk/build-geode-mod.
+name: Build Geode Mod
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - name: Windows
+            os: windows-latest
+            target: Win64
+          - name: macOS
+            os: macos-latest
+            target: MacOS
+          - name: Android32
+            os: ubuntu-latest
+            target: Android32
+          - name: Android64
+            os: ubuntu-latest
+            target: Android64
+
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          target: ${{ matrix.config.target }}
+          sdk: latest
+          cli: latest
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: clickbeforeframes-${{ matrix.config.target }}
+          path: "*.geode"
+          if-no-files-found: warn
