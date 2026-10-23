@@ -1,0 +1,75 @@
+{
+    "geode": ">=v5.0.0",
+    "version": "1.0.0",
+    "id": "username.clickbeforeframes",
+    "name": "Click Before Frames",
+    "developer": "Community Researcher",
+    "description": "Experimental input-time-shift utility for GD 2.2081. Intercepts the physical input funnel, keeps a bounded simulation snapshot ring, and re-asserts your click N ticks earlier in world time.",
+    "repository": "https://github.com/username/ClickBeforeFrames",
+    "gd": {
+        "win": "2.2081",
+        "android": "2.2081",
+        "mac": "2.2081"
+    },
+    "settings": {
+        "enabled": {
+            "type": "bool",
+            "name": "Enable Cheat / Mod",
+            "description": "Master switch. When off, the mod does nothing at all.",
+            "default": false
+        },
+        "tick-count": {
+            "type": "int",
+            "name": "Saved Ticks (Frames)",
+            "description": "How many physics ticks (1 tick = 1/240 s) to shift a press backwards in world time.",
+            "default": 2,
+            "min": 0,
+            "max": 16,
+            "control": {
+                "slider": true
+            }
+        },
+        "rollback-shift": {
+            "type": "bool",
+            "name": "Enable Snapshot Rewind (experimental)",
+            "description": "The actual tick-shift. Restores a snapshot of the simulation from N ticks ago and re-asserts your input. Off = the mod only measures and reports, and changes nothing.",
+            "default": true
+        },
+        "show-hud": {
+            "type": "bool",
+            "name": "Show HUD Indicator",
+            "description": "Displays current mode, shift count and input state on screen during gameplay.",
+            "default": true
+        },
+        "toggle-key": {
+            "type": "keybind",
+            "name": "Toggle Key",
+            "description": "Toggles the mod on / off in game (Shift + this key cycles the saved ticks instead).",
+            "default": "F6",
+            "category": "gameplay"
+        },
+        "allow-in-practice": {
+            "type": "bool",
+            "name": "Allow in Practice Mode",
+            "description": "Off by default: rewinding while the game's own practice checkpoints are active can fight with them.",
+            "default": false
+        },
+        "max-objects": {
+            "type": "int",
+            "name": "Snapshot Object Budget",
+            "description": "Skip snapshotting on levels with more than this many live objects. Snapshots copy object state every step, so this is the main performance guard.",
+            "default": 12000,
+            "min": 1000,
+            "max": 200000,
+            "control": {
+                "slider": true
+            }
+        },
+        "debug-log": {
+            "type": "bool",
+            "name": "Verbose Logging",
+            "description": "Log every captured step, shift and guard rejection to Geode's log.",
+            "default": false
+        }
+    }
+}
